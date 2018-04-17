@@ -4,23 +4,13 @@ import chardet
 import operator
 
 
-def open_file(file_txt):
-    with open(file_txt, 'rb') as f:
-        data = f.read()
-        result = chardet.detect(data)
-        return result
-
-
 def list_to_dict(txt_list):
-    i = 0
     dict_word = {}
-    while i < len(txt_list):
-        j = 0
+    for item in txt_list:
+        dict_word[item] = 0
         for len_word in txt_list:
-            if txt_list[i] == len_word:
-                j += 1
-        dict_word[txt_list[i]] = j
-        i += 1
+            if item == len_word:
+                dict_word[item] += 1
     return dict_word
 
 
@@ -34,10 +24,11 @@ def max_word(new_dict):
 
 
 def search_word(file_name):
-    result_coding = open_file(file_name)
-    with open(file_name, encoding=result_coding['encoding']) as f:
+    with open(file_name, 'rb') as f:
         data = f.read()
-        list_file = data.split(' ')
+        result = chardet.detect(data)
+        s = data.decode(result['encoding'])
+        list_file = s.split(' ')
         list_file.sort()
         new_list = []
         for word in list_file:
